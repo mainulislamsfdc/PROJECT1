@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Scraper Results</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; }
+        form { margin-bottom: 20px; }
+        input[type="text"] { width: 300px; padding: 5px; }
+        input[type="submit"] { padding: 5px 10px; }
+        .error { color: red; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>Welcome, {{ current_user.username }}!</h1>
+    <a href="{{ url_for('logout') }}">Logout</a>
+    <h2>Web Scraper</h2>
+    <form method="POST">
+        <input type="text" name="url" placeholder="Enter a URL to scrape" required>
+        <input type="submit" value="Scrape">
+    </form>
+    
+    <form action="{{ url_for('search') }}" method="GET">
+        <input type="text" name="query" placeholder="Search scraped data">
+        <input type="submit" value="Search">
+    </form>
+    
+    {% if data %}
+        <h2>Latest Scrape Result</h2>
+        {% for item in data %}
+            {% if item.status == 'success' %}
+                <h3>Results for: {{ item.url }}</h3>
+                <ul>
+                    <li><strong>Title:</strong> {{ item.title }}</li>
+                    <li><strong>Description:</strong> {{ item.description }}</li>
+                    <li><strong>H1:</strong> {{ item.h1 }}</li>
+                </ul>
+            {% else %}
+                <p class="error">{{ item.message }}</p>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    
+    {% if history %}
+        <h2>Your Recent Scrapes</h2>
+        <table>
+            <tr>
+                <th>URL</th>
+                <th>Title</th>
+                <th>Timestamp</th>
+            </tr>
+            {% for item in history %}
+                <tr>
+                    <td>{{ item.url }}</td>
+                    <td>{{ item.title }}</td>
+                    <td>{{ item.timestamp }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</body>
+</html>

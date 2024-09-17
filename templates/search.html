@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>Search Results for "{{ query }}"</h1>
+    <a href="/">Back to Home</a>
+    {% if results %}
+        <table>
+            <tr>
+                <th>URL</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>H1</th>
+                <th>Timestamp</th>
+            </tr>
+            {% for item in results %}
+                <tr>
+                    <td>{{ item.url }}</td>
+                    <td>{{ item.title }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.h1 }}</td>
+                    <td>{{ item.timestamp }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No results found.</p>
+    {% endif %}
+</body>
+</html>
